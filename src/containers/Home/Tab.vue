@@ -55,16 +55,17 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/style/base.scss";
 .home-tab{
-    margin-top:rem(50px);
-    padding:0 rem(30px);
+    margin-top:rem(40px);
+    padding:0 rem(45px);
     .tab-controller{
       border:2px  solid $color-theme;
-      border-radius:rem(50px);
-      height:rem(110px);
-      line-height:rem(110px);
+      border-radius:rem(40px);
+      height:rem(95px);
+      line-height:rem(95px);
       display:flex;
       align-items:center;
       justify-content:center;
+      
       >li{
         height:100%;
         flex:1;
@@ -73,10 +74,11 @@ export default {
         text-align:center;
         font-weight: bold;
         border-right:1px  solid $color-theme;
-         
+      
         &:first-of-type{
+         
           border-top-left-radius:rem(35px);
-           border-bottom-left-radius:rem(35px);
+          border-bottom-left-radius:rem(35px);
         }
         &:last-of-type{
           border:none;
@@ -89,7 +91,7 @@ export default {
       }
     }
     .tab-content{
-      margin-top:rem(50px);
+      margin-top:rem(40px);
       .tab-content-item{
         &:last-of-type{
            .tab-item-btn{
@@ -109,21 +111,20 @@ export default {
          justify-content:center;
          align-items:center;
        .tabitem-icon{
-        height:rem(180px);
-      
+          height:rem(160px);
         }
         .tabitem-text{
-          margin-top:rem(50px);
+          margin-top:rem(40px);
           font-size:$font-size-medium-x;
           color:#fff;
           line-height:30px;
         }
         .tab-item-btn{
-         margin-top:rem(50px);
+         margin-top:rem(40px);
           padding:0 rem(30px);
-          height:rem(110px);
-          border-radius:rem(30px);
-          width:60%;
+          height:rem(100px);
+          border-radius:rem(25px);
+          width:50%;
           border:1px  solid  $color-sub-theme;
            display:flex;
             justify-content:center;
@@ -132,7 +133,7 @@ export default {
               position:relative;
               
           span{
-            font-size:$font-size-large-x;
+            font-size:$font-size-large;
             color: $color-sub-theme;
             font-weight: bold;
           }
@@ -141,8 +142,8 @@ export default {
             top:50%;
             right:rem(30px);
             transform:translate3d(0,-50%,0);
-            height:rem(50px);
-            width:rem(50px);
+            height:rem(40px);
+            width:rem(40px);
 
           }
         }
