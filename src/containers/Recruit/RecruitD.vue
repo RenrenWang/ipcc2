@@ -19,6 +19,35 @@
                     </div>
                 </li>
              </ul>
+             <div class="rd-section">
+                   <h3><img src='../../assets/images/rdtext.png'/>工作内容与补充</h3>
+                   <div class="text-content">
+                         <p class="">哈三季度哈斯就会打架啊可是贷款计划</p>
+                   </div>
+                  
+             </div>
+             <div class="rd-address">
+                  <div class="rd-ad-left">
+                        <div class="btn-click">
+                            <img src='../../assets/images/address.png'/>
+                            <span>点击查看</span>
+                        </div>
+                        <p>详细地址：滨江区什么什么什么圣诞节</p>
+                  </div>
+                  <img src="../../assets/images/righticon.png" class="rd-ad-right"/>
+              </div>
+             <div class="rd-section rd-section-imgs">
+                   <h3><img src='../../assets/images/zpicon.png'/>工作环境</h3>
+                   <ul class="img-list">
+                       <li  v-for="v in  3">
+                           <img  src="https://pro.modao.cc/uploads3/images/1202/12026217/raw_1503314459.jpeg"/>
+                       </li>
+                   </ul>
+                  
+             </div>
+        </div>
+         <div class="fbutton">
+            <img src="../../assets/images/deleteIcon.png"/>
         </div>
   </div>
 </template>
@@ -116,10 +145,14 @@ export default {
               font-weight:bold;
               font-size:$font-size-medium-x;
               box-sizing:border-box;
+              >div{
+                  width: rem(300px);
+                  text-align: left;
+              }
               &:last-of-type{
                  >img{
                   height:rem(60px);
-                   
+                   padding: 0 rem(20px) ;
                  }
               }
               >img{
@@ -138,6 +171,113 @@ export default {
           
       }
 
+    }
+    .rd-section{
+        margin-top:rem(40px);
+        padding: 0 rem(30px);
+        >h3{
+           display: flex;
+           align-items: center;
+            color: $color-theme ;
+            font-size:$font-size-medium-x ;
+            img{
+                margin-right: 10px;
+                height: rem(60px);
+                
+            }
+        }
+        .text-content{
+            margin-top:rem(25px);
+            border:1px  solid $color-theme ;
+            border-radius: rem(20px);
+            min-height: rem(250px);
+            color: $color-theme ;
+            font-size:$font-size-medium-x;
+            padding: rem(20px);
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+    .rd-address{
+      margin: rem(50px) rem(30px) 0 rem(30px);
+      color: $color-theme ;
+      
+       border:1px  solid $color-theme ;
+       border-radius: rem(20px);
+       min-height: rem(250px);
+       display: flex;
+       flex-direction: row;
+       align-items: center;
+         
+       .rd-ad-left{
+            flex: 1;
+            display: flex;
+            align-items: center;
+           flex-direction: column;
+           justify-content: center;
+           text-align: center;
+           font-size: $font-size-medium-x ;
+           img{
+               height: rem(70px);
+               
+           }
+           .btn-click{
+               margin-bottom:rem(50px);
+               display: flex;
+               align-items: center;
+               flex-direction: row;
+             
+               font-size: $font-size-large-x ;
+           }
+       }
+       .rd-ad-right{
+           height: rem(60px);
+       }
+    }
+    .rd-section-imgs{
+        padding-bottom:rem(190px);
+        h3{
+            justify-content: center;
+            img{
+                height: rem(50px); 
+            }
+        }
+        .img-list{
+             margin-top:rem(25px);
+            border:1px  solid $color-theme ;
+            border-radius: rem(20px);
+            min-height: rem(250px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            >li{
+                width:28%;
+                margin:0 1.5%;
+                img{
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+     .fbutton{
+       position:fixed;
+       bottom:0;
+       right:0;
+       height:rem(170px);
+       width:rem(170px);
+       border-radius: 100% 0 0 0;
+       background-color: rgb(255, 69, 69);;
+       border-color: rgb(255, 69, 69);
+       img{
+           width:45%;
+           position:absolute;
+           left:50%;
+           top:50%;
+           transform:translate3d(-30%,-40%,0);
+       }
     }
 }
 </style>

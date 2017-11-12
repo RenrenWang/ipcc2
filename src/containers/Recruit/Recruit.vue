@@ -3,7 +3,7 @@
         <vHeader  :isSubPage="false" title="我的发布" :isFixed="true"/>
         <div class="recruit-list">
            <ul>
-              <RecruitItem v-for="v in 20"/>
+              <RecruitItem v-for="(v,index) in 20"  :key="index"/>
            </ul>
         </div>
         <div class="fbutton">

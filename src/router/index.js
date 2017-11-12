@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Home from '@/containers/Home/Home'
 import Recruit from '@/containers/Recruit/Recruit'
 import RecruitD from '@/containers/Recruit/RecruitD'
+import Resume from '@/containers/Resume/Resume'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/recruitD',
       name: 'RecruitD',
       component: RecruitD
+    },
+    {
+      path: '/resume',
+      name: 'Resume',
+      component: Resume
     }
 
   ]
