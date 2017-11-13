@@ -1,15 +1,15 @@
 <template>
   <div class="recruitD">
-        <vHeader  :isSubPage="false" title="详情" :isFixed="true"/>  
+        <VHeader  :isSubPage="false" title="详情" :isFixed="true"/>  
         <div class="rd-content">
             <div class="rd-top">
                 <img class="xql" src="../../assets/images/xql.png"/>
-                <PInfo :isHome="false" :nameStyle="{'font-size':'14px'}" :avaterStyle="{height:'75px',width:'75px','margin-bottom':'15px'}"/>
+                <PInfo :isHome="false" :name="data.pinfoPname" :imgUrl="data.pinfoUri" :nameStyle="{'font-size':'14px'}" :avaterStyle="{height:'75px',width:'75px','margin-bottom':'15px'}" />
                 <div class="line-h"></div>
                 <img class="timeicon" src="../../assets/images/timeIcon.png"/>
-                <p class="time">剩余29天</p>
+                <p class="time">剩余{{data.timeDays}}天</p>
              </div>
-             <h2>滨江需要一位老师</h2>
+             <h2>{{data.infoTitle}}</h2>
              <ul class="text-list">
                 <li v-for="v in tList">
                     <img :src="v.icon"/>
@@ -22,57 +22,206 @@
              <div class="rd-section">
                    <h3><img src='../../assets/images/rdtext.png'/>工作内容与补充</h3>
                    <div class="text-content">
-                         <p class="">哈三季度哈斯就会打架啊可是贷款计划</p>
+                         <p class="">{{data.titleSimdesc}}</p>
                    </div>
                   
              </div>
              <div class="rd-address">
                   <div class="rd-ad-left">
-                        <div class="btn-click">
+                        <div class="btn-click" @click="showMapBig">
                             <img src='../../assets/images/address.png'/>
                             <span>点击查看</span>
                         </div>
-                        <p>详细地址：滨江区什么什么什么圣诞节</p>
+                        <p>详细地址：{{data.mapAddr+data.infoAddr}}</p>
                   </div>
                   <img src="../../assets/images/righticon.png" class="rd-ad-right"/>
               </div>
              <div class="rd-section rd-section-imgs">
                    <h3><img src='../../assets/images/zpicon.png'/>工作环境</h3>
                    <ul class="img-list">
-                       <li  v-for="v in  3">
-                           <img  src="https://pro.modao.cc/uploads3/images/1202/12026217/raw_1503314459.jpeg"/>
+                      <li v-for="(v,index) in list">
+                          <img class="preview-img"  :src="v.src"  @click="$preview.open(index, list)">
                        </li>
                    </ul>
-                  
-             </div>
+              </div>
         </div>
-         <div class="fbutton">
+         <div class="fbutton" @click="showAlertConfirm()">
             <img src="../../assets/images/deleteIcon.png"/>
         </div>
+         <MapBig  v-if="isMapBig" :xy="mapXY" @hMap="showMapBig"/>
+         <BottomPlay  v-show="isShowbp"  :isPay="true" :phoneNumber="data.pinfoPhone"/>
+         <FooterButton  v-if="($route.query.type&&applClass=='T')" btnName="与他联系" @fBtnAction="showPhone()"/>
+         <AlertConfirm  v-show="isShowAlertConfirm"  alertTitle="删除" alertContent="删除后，该信息将无法被老师所看到。" @cancelActive="AlertCancelActive" @confirmActive="AlertConfirmActive"/>
+         <Prompt v-show="isPrompt"  :content="pContent" @actionPrompt="pAction()"/>
   </div>
 </template>
 
 <script>
-import  vHeader from '../../components/Header.vue'
+
 import  PInfo from '../../components/PInfo.vue'
+
+
+import VHeader from '../../components/Header.vue'
+
+import Loading from '../../components/Loading.vue'
+import BottomPlay from '../../components/BottomPlay.vue'
+
+import AlertConfirm from '../../components/AlertConfirm.vue'
+import MapBig from '../../components/MapBig.vue'
+
+
+import Prompt from '../../components/Prompt.vue'
 export default {
-  name: 'RecruitD',
-  data () {
-    return {
-     tList:[
-         {"icon":require('../../assets/images/tlisticon1.png'),"name":'工作性质：',"value":'全职'},
-         {"icon":require('../../assets/images/tlisticon2.png'),"name":'性别：',"value":'男老师'},
-         {"icon":require('../../assets/images/tlisticon3.png'),"name":'技能：',"value":'古典舞'},
-         {"icon":require('../../assets/images/tlisticon4.png'),"name":'薪资：',"value":'800元/月'}
+    name: 'recruitD',
+    data() {
+        return {
+           isLoading:true,
+           data:{},
+           imgList:[],
+           list: [],
+           isError:false,
+           imgUrl:api.imgUrl,
+           isShowAlertConfirm:false,
+           address:api.address,
+           isMapBig:false,
+           mapXY:{x:0,y:0},
+           isJS:false,
+           isShowbp:false,
+           applClass:'',
+           isPrompt:false,
+           pContent:'',
+            tList:[
+         {"icon":require('../../assets/images/tlisticon1.png'),"name":'工作性质：',"value":''},
+         {"icon":require('../../assets/images/tlisticon2.png'),"name":'性别：',"value":''},
+         {"icon":require('../../assets/images/tlisticon3.png'),"name":'技能：',"value":''},
+         {"icon":require('../../assets/images/tlisticon4.png'),"name":'薪资：',"value":''}
            
      ]
-    }
-  },
-   components:{
+        }
+    },
+    created(){
+      
+       this.getData();
+    },
+    methods:{
+    getData(){
      
-      vHeader,
-      PInfo
-  }
+      this.applClass=GetQueryString('applClass')?GetQueryString('applClass'):'';
+      
+    //   console.log(this.$route.query.type);
+       this.$http.get(api.recruitD+this.$route.query.id)//this.$route.params.id
+       .then(response=>{
+          
+          this.isLoading=false;
+          let data=response.data;
+          if(data.result!='success'){
+             this.promptCommon('数据不存在');
+             this.isError=true;
+             return;
+          }
+          this.data=data.data[0];
+          this.imgList=data.imgData;
+          this.isError=false;
+          this.tList[0].value= this.data.titleClassname;
+          this.tList[1].value= this.data.titleSex;
+          this.tList[2].value=this.data.titleExt1name;
+          this.tList[3].value=this.setDy();
+          if(!this.isLoading){
+             this.mapXY={
+                x:this.data.mapAxis,
+                y:this.data.mapAyis
+            }
+             setTimeout(()=>{
+                 this.showMap(this.data.mapAxis, this.data.mapAyis);
+             },0)
+          }
+          
+          
+           data.imgData.map((item,index)=>{
+              
+              this.list.push({
+                  src:this.imgUrl+item.lidFileuri,
+                  w: document.body.clientWidth ,
+                  h: document.body.clientHeight-88
+              });
+           });
+           this.isJS=GetQueryString('pinfoId')==this.data.pinfoId?true:false;
+            
+          
+       }).catch(error=>{
+           console.log(error);
+           this.isError=true;
+          // this.isLoading=false;
+       })
+        },
+    pay(){
+        location.href=api.pay+"&feeClass=A&pinfoId="+GetQueryString('pinfoId')+"&msgId="+this.data.infoIds;
+      },
+        setDy(){
+          return  this.data.titleClassname=='全职'?this.data.salaryClassname+"元/月":this.data.salaryClassname+"元/小时";
+        },
+       showPhone(){
+            this.isShowbp=!this.isShowbp;
+        },
+        nrAction(){
+              this.$router.push({path:'/recruitPost',query:{id:this.$route.query.id}});
+        },
+        showMapBig(){
+        this.isMapBig=!this.isMapBig;
+        },
+     showMap(x,y){
+        var map = new AMap.Map('map', {
+        resizeEnable: false,
+        center: [x, y],
+        zoom: 13
+      });
+      var marker = new AMap.Marker({
+        position: map.getCenter()
+        });
+        marker.setMap(map);
+        },
+      AlertCancelActive(){
+         this.isShowAlertConfirm=false;
+      },
+     promptCommon(str){
+      this.isPrompt=true;
+       this.pContent=str;
+    },
+    pAction(){
+   
+     this.isPrompt=!this.isPrompt;
+    },
+      AlertConfirmActive(){
+         
+          this.$http.get(api.recruitDelete+this.$route.query.id)
+          .then((response)=>{
+               this.isShowAlertConfirm=false;
+              console.log(JSON.stringify(response.data));
+               if(response.data.result=='success'){
+                  this.promptCommon('删除成功');
+               }else{
+                   this.promptCommon('删除失败');
+               }
+              
+          });
+        
+      },
+      showAlertConfirm(){
+         this.isShowAlertConfirm=true;
+      }
+    },
+    components: {
+        VHeader,
+        PInfo,
+        AlertConfirm,
+        MapBig,
+        BottomPlay,
+        Loading,
+        Prompt,
+        
+       
+        
+    }
 }
 </script>
 
@@ -86,8 +235,6 @@ export default {
         padding-top:rem(100px);
         text-align:center;
         .rd-top{
-         
-        
             display:flex;
             flex-direction:row;
             justify-content:space-between;
@@ -166,6 +313,7 @@ export default {
               }
               .text-value{
                   color:$color-text;
+                  font-size:$font-size-medium;
               }
           }
           

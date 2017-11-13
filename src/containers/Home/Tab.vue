@@ -8,10 +8,11 @@
            <div class="tab-content-item" v-for="(item,index) in  tabContents" v-show="tabs[index]['isActive']">
                 <img :src="item.imgurl" class="tabitem-icon"/>
                 <p class="tabitem-text">{{item.text}}</p>
-                <div class="tab-item-btn">
+
+                <router-link class="tab-item-btn" :to="{path:item.toUrl,query: { type:'T'}}" tag="div">
                     <span>{{item.btnName}}</span>
                     <img :src="item.btnIcon" class="btnIcon"/>
-                </div>
+                </router-link>
            </div>
        </div>
   </div>
@@ -28,8 +29,8 @@ export default {
          {name:'专属',isActive:false}
          ],
         tabContents:[
-          {toUrl:'',imgurl:require('../../assets/images/hometabItemicon1.png'),text:'您可以通过填写招聘信息来发布您的招聘需求，发布的信息可以让更多教师看到。',"btnName":'点击发布',btnIcon:require('../../assets/images/toRight.png')},
-          {toUrl:'',imgurl:require('../../assets/images/hometabItemicon2.png'),text:'里面有很多求职教师的简历哦~，每一份简历都是经过IPCC严格审核。',"btnName":'点击前往',btnIcon:require('../../assets/images/toRight.png')},
+          {toUrl:'/recruit',imgurl:require('../../assets/images/hometabItemicon1.png'),text:'您可以通过填写招聘信息来发布您的招聘需求，发布的信息可以让更多教师看到。',"btnName":'点击发布',btnIcon:require('../../assets/images/toRight.png')},
+          {toUrl:'/resume',imgurl:require('../../assets/images/hometabItemicon2.png'),text:'里面有很多求职教师的简历哦~，每一份简历都是经过IPCC严格审核。',"btnName":'点击前往',btnIcon:require('../../assets/images/toRight.png')},
           {toUrl:'',imgurl:require('../../assets/images/hometabItemicon3.png'),text:'IPCC专属教师，功能正在努力完善，详情请点击下方查看',"btnName":'了解详情',btnIcon:require('../../assets/images/zhiIcon.png')}
         ] 
     }

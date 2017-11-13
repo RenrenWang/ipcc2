@@ -1,12 +1,12 @@
 <template>
     <div class="pInfo">
             <div class="hp-avatar" :style="avaterStyle">
-                <img src="/static/images/avatar.jpg" :style="avaterStyle"/>
+                <img :src="imgUrl" :style="avaterStyle"/>
                  <a  href="javascript:;" class="btn-edit" v-if="isHome">
                    <span class="edit-icon"></span>
                  </a>
             </div>
-            <p class="hp-name" :style="nameStyle">IPCC-天洋</p>
+            <p class="hp-name" :style="nameStyle">{{name}}</p>
     </div>
 </template>
 
@@ -20,10 +20,17 @@ export default {
     },
     avaterStyle:{
         type:Object,
-        default:{}
+      
     },nameStyle:{
         type:Object,
-        default:{}
+       
+    },
+    imgUrl:{
+        type:String,
+        default:require('../assets/images/picIcon.png')
+    },
+    name:{
+        type:String 
     }
   },
   data () {

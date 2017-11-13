@@ -43,11 +43,10 @@ export default {
 
   methods: {
     setAge(date) {
-      let age =
-        new Date(date).getFullYear() - new Date().getFullYear() > 0
-          ? new Date(date).getFullYear() - new Date().getFullYear()
-          : -(new Date(date).getFullYear() - new Date().getFullYear());
-      return parseInt(age) + 1 + "岁";
+     // let age =
+       let age = parseInt(date.split('-')[0]) - parseInt(new Date().getFullYear());
+        age=age>0?age:-age;
+        return age + 1 + "岁";
     },
     titleExt() {
       let resume = this.resume;

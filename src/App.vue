@@ -43,9 +43,9 @@ footer, header, hgroup, menu, nav, section {
 }
 html,body,#app{
  
- height:100%;
- -webkit-overflow-scrolling : touch; 
-	
+    min-height: 100%;
+    -webkit-overflow-scrolling: touch;
+   
 }
 body {
 

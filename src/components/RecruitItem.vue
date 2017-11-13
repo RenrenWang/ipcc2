@@ -1,31 +1,59 @@
 <template>
-  <div class="recruit-item">
-       <h2>滨江需要一位老师</h2>
+  <router-link class="recruit-item" :to="{name:'RecruitD',query: { id:rData.infoIds,type:isAll}}"  tag="li">
+
+       <h2>{{rData.infoTitle}}</h2>
         <ul class="ri-kinds">
              <li>
                <img src="../assets/images/navIcon.png"/>
-               <span>男</span> 
+               <span>{{rData.titleSex}}</span> 
               </li>
-             <li>古典舞</li> 
+             <li>{{rData.titleExt1name}}</li> 
         </ul>
-        <p class="ri-rmb">全职：3000元/月</p>
+        <p class="ri-rmb">全职：{{setDy()}}</p>
         <div class="ri-time">
             <img src="../assets/images/timeIcon.png"/>
-            <span>剩余29天</span>
+            <span>剩余{{rData.timeDays}}天</span>
         </div>
-        <img  src="/static/images/avatar.jpg" class="avatar"/>
-  </div>
+        <img :src="rData.pinfoUri" class="avatar"/>
+  </router-link>
 </template>
 
 <script>
 export default {
-  name: 'RecruitItem',
+  name: 'recruitItem',
+  props:{
+      isAll:{
+       type:Boolean,
+       default:false
+      },
+      rData:{
+       type:Object
+      },
+      selectIndex:{
+       type:Number
+      },
+      type:{
+         type:String 
+      }
+      
+  },
   data () {
     return {
-      msg: ''
+       imgUrl:api.imgUrl
+    }
+  },
+  methods:{
+     
+       setDy(){
+          return  this.rData.titleClassname=='全职'?this.rData.salaryClassname+"元/月":this.rData.salaryClassname+"元/小时";
+        },
+    deleteItem(){
+     
+       this.$emit('deleteItem',[this.rData.infoIds,this.selectIndex]);  
     }
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
