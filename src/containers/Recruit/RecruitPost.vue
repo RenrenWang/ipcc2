@@ -22,7 +22,7 @@
                  <img src="../../assets/images/postsectionicon3.png" />
                  <span>地址（请选择该招聘信息的工作地点）</span>
               </h2>    
-              <span  class="input-post" @click="isShowMap" >点击选择地址</span>
+              <input type="text"  class="input-post" @click="isShowMap" v-model="rMapAddress" placeholder="点击选择地址" />
               <input type="text" class="xxdz input-post" v-model="rAddress" placeholder="详细地址：8015室" />
        </div>
         <div class="section">
@@ -31,8 +31,11 @@
                  <span>性别（您需要男老师还是女老师）</span>
               </h2>    
               <ul class="select-box">
-                 <li><img src="../../assets/images/navIcon.png"/></li>
-                 <li><img src="../../assets/images/nvIcon.png"/></li>
+                 <li v-show="this.rSex=='男'" @click="selectSex('男')"><img src="../../assets/images/navIcon.png"/></li>
+                 <li v-show="this.rSex!='男'" @click="selectSex('女')"><img src="../../assets/images/navIcon2.png"/></li>
+                
+                 <li v-show="this.rSex=='女'" @click="selectSex('女')"><img src="../../assets/images/nvIcon.png"/></li>
+                 <li v-show="this.rSex!='女'" @click="selectSex('男')"><img src="../../assets/images/nvIcon2.png"/></li>
               </ul>
        </div>
         <div class="section">
@@ -88,6 +91,13 @@
         <div class="fbutton" @click="showAlertConfirm()">
            <p class="text">发布</p>
         </div>
+         <Loading v-show="isLoading" :loaderNumber=1  bgColor="rgb(0, 0, .2)"/>
+    <selectMapAddress v-show="isShowSelectMap" @closeSelectMap="showMap"/>
+  
+    <KindPanel :selectItem="selectKindsStr" v-show="isShowPanel" @closePanel="ishowKindPanel" :sKinds="kinds" :selectIndex='1' sName="艺术种类" />
+    <Prompt v-show="isPrompt"  :content="pContent" @actionPrompt="pAction"/>
+    <BottomPlay v-show="isShowPlay"/>
+    <AlertConfirm  v-show="isShowAlertConfirm"  alertTitle="提示" alertContent="招聘信息已上传，支付后教师才能看到招聘信息" @cancelActive="AlertCancelActive" @confirmActive="AlertConfirmActive"/>
   </div>
 </template>
 
@@ -142,6 +152,11 @@ export default {
     if(this.$route.query.id){
       this.getDataD();
     }
+   },
+   computed:{
+     setmap(){
+       return this.rMapAddress!=''? this.rMapAddress:'点击选择地址';
+     }
    },
   methods: {
     reUpload(){

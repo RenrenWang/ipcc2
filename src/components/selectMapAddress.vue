@@ -36,6 +36,6 @@ width:100%;
 height:100%;
 z-index:99999;
 background:#fff;
-
+top:0;
 }
 </style>
