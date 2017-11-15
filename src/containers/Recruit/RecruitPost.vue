@@ -32,10 +32,10 @@
               </h2>    
               <ul class="select-box">
                  <li v-show="this.rSex=='男'" @click="selectSex('男')"><img src="../../assets/images/navIcon.png"/></li>
-                 <li v-show="this.rSex!='男'" @click="selectSex('女')"><img src="../../assets/images/navIcon2.png"/></li>
+                 <li v-show="this.rSex=='女'" @click="selectSex('男')"><img src="../../assets/images/navIcon2.png"/></li>
                 
                  <li v-show="this.rSex=='女'" @click="selectSex('女')"><img src="../../assets/images/nvIcon.png"/></li>
-                 <li v-show="this.rSex!='女'" @click="selectSex('男')"><img src="../../assets/images/nvIcon2.png"/></li>
+                 <li v-show="this.rSex=='男'" @click="selectSex('女')"><img src="../../assets/images/nvIcon2.png"/></li>
               </ul>
        </div>
         <div class="section">
