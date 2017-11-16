@@ -14,9 +14,9 @@
                  <img src="../../assets/images/tlisticon3.png" class="wdicon"/>
                  <span>艺术种类（您需要哪项技能的教师）</span>
               </h2>    
-              <input type="text" class="input-post" v-model="rClass" placeholder="点击选择（该项为单选）" disabled/>
-            
-       </div>
+              <p  v-if="selectKinds.length<=0" class="input-post input-button" @click="showPanel">点击选择（该项为单选）</p>
+              <p v-else class="input-post input-button" style="color:#000" @click="showPanel">{{selectKinds[0].codeValue}}</p>
+       </div> 
        <div class="section">
               <h2 class="title">
                  <img src="../../assets/images/postsectionicon3.png" />
@@ -92,12 +92,13 @@
            <p class="text">发布</p>
         </div>
          <Loading v-show="isLoading" :loaderNumber=1  bgColor="rgb(0, 0, .2)"/>
-    <selectMapAddress v-show="isShowSelectMap" @closeSelectMap="showMap"/>
+    <selectMapAddress v-show="isShowSelectMap" @closeSelectMap="showMap" />
   
-    <KindPanel :selectItem="selectKindsStr" v-show="isShowPanel" @closePanel="ishowKindPanel" :sKinds="kinds" :selectIndex='1' sName="艺术种类" />
+    <KindPanel   v-show="isShowKindList" @showHid="showKindList" :kindList="kinds"/>
     <Prompt v-show="isPrompt"  :content="pContent" @actionPrompt="pAction"/>
     <BottomPlay v-show="isShowPlay"/>
     <AlertConfirm  v-show="isShowAlertConfirm"  alertTitle="提示" alertContent="招聘信息已上传，支付后教师才能看到招聘信息" @cancelActive="AlertCancelActive" @confirmActive="AlertConfirmActive"/>
+    
   </div>
 </template>
 
@@ -105,7 +106,7 @@
 
 import VHeader from '../../components/Header.vue'
 
-import KindPanel from '../../components/KindPanel.vue'
+import KindPanel from '../../components/KindPanel2.vue'
 import selectMapAddress from '../../components/selectMapAddress.vue'
 import Prompt from '../../components/Prompt.vue'
 
@@ -144,6 +145,7 @@ export default {
       imgUrl:api.imgUrl,
       isUpload:true,
       zfnums:0,
+      isShowKindList:false
     
     }
   },
@@ -159,6 +161,11 @@ export default {
      }
    },
   methods: {
+    showKindList(arr){
+   
+       this.isShowKindList=!this.isShowKindList;
+       this.selectKinds=arr;
+    },
     reUpload(){
    this.isUpload=!this.isUpload;
     },
@@ -343,6 +350,7 @@ export default {
         .then(response => {
           let data = response.data;
           data.fieldsData.map((item, index) => {
+             item.isShow=false;
             item.classData.map((sitem, sindex) => {
               sitem.isSelect = false;
             })
@@ -354,7 +362,7 @@ export default {
     showPanel() {
       if (!this.kinds || this.kinds.length <= 0)
        this.getKindsData();
-       this.isShowPanel = !this.isShowPanel;
+       this.isShowKindList = !this.isShowKindList;
     },
     ishowKindPanel(setArray) {
       this.selectKinds = setArray;
@@ -497,9 +505,11 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/style/base.scss";
 .recruit-post{
-   position:absolute;
+  
    background:$color-background;
    width:100%;
+   height:100%;
+  overflow-x:hidden;
      .section-content{
          padding-top:rem(165px);
          padding-bottom:rem(180px);
@@ -538,6 +548,10 @@ export default {
           font-size:$font-size-medium-x;
           outline:none;
           border:none;
+          &.input-button{
+            color:#bbb;
+            line-height:rem(100px);
+          }
           &.xxdz{
               margin-top:rem(45px);
           }
