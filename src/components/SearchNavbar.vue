@@ -45,7 +45,7 @@ export default {
     padding:0 5px;
     overflow:hidden;
     font-size:14px;
-    height:rem(110px);
+    height:rem(120px);
     width:100%;
   
     background:$color-theme ;

@@ -2,13 +2,13 @@
 	<div class="resume">
 		<VHeader :isSubPage="false" title="简历大全" :isFixed="true" />
 		<SearchNavbar @searchNavLeftBtn="selectAddressCity" :sCity="city" @changKey="getKey"/>
-		<SearchKey :searchKeys="keyList" @resultKinds="getkinds"/>
+		<SearchKey :searchKeys="keyList" @resultSelect="clickSearchKey" />
 		<div class="resume-list mescroll" id="mescroll">
 			<ul id="dataList" class="data-list">
 				<ResumeItem v-for="(v,index) in pdlist" :key="index" :resume="v" />
 			</ul>
 		</div>
-      
+        <KindPanel   v-show="isShowKindList" @showHid="showKindList" :kindList="kinds"/>
 	</div>
 </template>
 
@@ -18,6 +18,7 @@ import SearchNavbar from '../../components/SearchNavbar.vue'
 import SearchKey from '../../components/SearchKey.vue'
 import ResumeItem from '../../components/ResumeItem.vue'
 import  SelectMapCity   from '../../components/SelectMapCity.vue'
+import  KindPanel   from '../../components/KindPanel2.vue'
 export default {
 	name: 'Resume',
 	data() {
@@ -26,28 +27,13 @@ export default {
 			city:'杭州市',
 			keyList: [
 				{
-					name: "兼全职", kinds: [
-						{
-							title: "",
-							classData: [{codeName:'J', codeValue: '兼职', isSelect: true }, {codeName:'C', codeValue: '全职', isSelect: false }]
-						}
-					]
+					name: "兼全职"
 				},
 				{
-					name: "艺术种类", kinds: [
-						{
-							title: "",
-							classData: []
-						}
-					]
+					name: "艺术种类"
 				},
 				{
-					name: "性别", kinds: [
-						{
-							title: "",
-							classData: [{codeName:"男", codeValue: '男', isSelect: true }, {codeName:'女', codeValue: '女', isSelect: false }]
-						}
-					]
+					name: "性别"
 				},
 			],
 			pdlist: [],
@@ -56,7 +42,9 @@ export default {
 			pinfoSex:'',
 			titleExt:'',
 			titleClass:'',
-            searchVal:''
+            searchVal:'',
+			kinds:[],
+			isShowKindList:false
 		}
 	},
 	// mounted() {
@@ -68,27 +56,59 @@ export default {
 		this.initMescroll();
 	},
 	methods: {
+		showKindList(arr){
+
+             if(arr.length>0){
+               	 this.keyList[1]['name']=arr[0].codeValue;
+				  
+			 }else{
+				this.keyList[1]['name']="艺术种类";
+			
+			 }
+		     this.getkinds(arr,1);
+             this.isShowKindList=!this.isShowKindList;
+		},
+		clickSearchKey(index){
+             if(index==1){
+			  this.isShowKindList=!this.isShowKindList;
+			 }
+		},
 		getKey(key){
 		   this.searchVal=key!=''?'&searchVal='+key:'';
 		   this.mescroll.resetUpScroll( false );
 		},
-		getkinds(arr){
+		getkinds(arr,index){
 	
-	
-			switch(arr[0]['selectIndex']){
+	      if(arr.length>0){
+                 
+				  switch(index){
 					case 0 :
-					this.titleClass=arr[0]['data']['codeName'];
+					this.titleClass=arr[0]['codeName'];
 					break;
 					case 1:
-					this.titleExt=arr[0]['data']['codeName'];
+					this.titleExt=arr[0]['codeName'];
 					break;
 					case 2:
-				    this.pinfoSex=arr[0]['data']['codeName']
+				    this.pinfoSex=arr[0]['codeName']
 					break;
-			}
+			  }
+		      
+		  }else{
+			   switch(index){
+					case 0 :
+					this.titleClass='';
+					break;
+					case 1:
+					this.titleExt='';
+					break;
+					case 2:
+				    this.pinfoSex=''
+					break;
+			  }
+		  }
 		 this.searchStr=this.resStr("pinfoSex",this.pinfoSex)+this.resStr("titleExt",this.titleExt)+this.resStr("titleClass",this.titleClass);
-		console.log( this.searchStr);
-		this.mescroll.resetUpScroll( false );
+			
+		 this.mescroll.resetUpScroll( false );
 		},
 		resStr(name,value){
         return  value!=''?'&'+name+'='+value:'';
@@ -115,21 +135,20 @@ export default {
             });
             this.isSelectAddressCity=!this.isSelectAddressCity;  
 		},
-    getKindsData(){
-		 this.$http.get(api.kindList)
-		 .then(response=>{
-			 let data=response.data;
-			 
-			 data.fieldsData.map((item,index)=>{
-				item.classData.map((sitem,sindex)=>{
-					sitem.isSelect=false;
+		getKindsData() {
+
+		this.$http.get(api.kindList)
+			.then(response => {
+			let data = response.data;
+			data.fieldsData.map((item, index) => {
+				item.isShow=false;
+				item.classData.map((sitem, sindex) => {
+				sitem.isSelect = false;
 				})
-			 })
-			 	
-			 this.keyList[1]['kinds']=data.fieldsData;
-		 }).catch(error=>{
-            console.log(error);
-		 })
+			})
+
+			this.kinds = data.fieldsData;
+			})
 		},
 		initMescroll() {
 			//创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
@@ -208,7 +227,8 @@ export default {
 		VHeader,
 		SearchNavbar,
 		SearchKey,
-		ResumeItem
+		ResumeItem,
+		KindPanel
 	
 	}
 }
@@ -218,12 +238,12 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/style/base.scss";
 .resume {
-
+    
 	background: #edebe8;
 	.resume-list {
     height: auto;
     position: fixed;
-    
+    overflow-y:auto;
   
 	top: rem(100px)  + rem(100px) + rem(110px) ;
 	bottom: 0;

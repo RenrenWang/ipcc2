@@ -114,6 +114,7 @@ export default {
   },
   methods:{
     selectList(index){
+    
          this.kindList[index].isShow=!this.kindList[index].isShow;
     //   this.kindList.map((item,index)=>{
     //       if(item.isShow=)
@@ -172,7 +173,7 @@ export default {
   height:100%;
   width:100%;
   background-color:$color-background;
-  position:absolute;
+  position:fixed;
   top:0;//rem(110px);
  
    z-index:999;

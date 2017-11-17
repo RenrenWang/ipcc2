@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-item">
+  <router-link class="resume-item" :to="{name:'ResumeD', query: { id: resume.rsmIds}}" tag="li">
     <div class="item-top">
           <img  :src="resume.pinfoUri" class="avatar"/>
           <span class="item-name">{{resume.pinfoPname}}</span>
@@ -28,7 +28,7 @@
           <p class="jqz-tips">{{resume.titleClassname}}</p>
       </div>
      
-  </div>
+  </router-link>
 </template>
 
 <script>

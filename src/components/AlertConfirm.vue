@@ -2,7 +2,7 @@
   <div class="alert-confirm">
      <div class="alert-bg"></div>
       <div class="alert-box">
-        <h2 class="alert-title">{{alertTitle}}</h2>   
+        <h2 class="alert-title"><img src="../assets/images/gtIcon.png"/></h2>   
         <p class="alert-content">{{alertContent}}</p>
         <div class="alert-btns">
             <a href="javascript:;" @click="cancelActive">取消</a>
@@ -83,10 +83,13 @@ export default {
     border-color: #bbbbbb;
 
  .alert-title{
-   height:rem(100px);
-   line-height:rem(100px);
+   
+ 
    font-size:20px;
    font-weight:bold;
+   img{
+      height:rem(150px);
+   }
  }
  .alert-content{
   padding:rem(25px);
@@ -107,6 +110,7 @@ export default {
       flex:1;
       text-align:center;
        line-height:rem(100px);
+         color:#1c74d9;
       &:nth-of-type(2){
         border-left:1px solid #bbb;
         color:#1c74d9;

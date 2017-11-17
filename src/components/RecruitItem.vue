@@ -4,12 +4,13 @@
        <h2>{{rData.infoTitle}}</h2>
         <ul class="ri-kinds">
              <li>
-               <img src="../assets/images/navIcon.png"/>
+               <span class="iconfont  icon-nan3" style="color:#1296db" v-if="rData.titleSex=='男'"></span>
+               <span class="iconfont   icon-nv2" style="color:#ff69c2" v-if="rData.titleSex=='女'"></span>
                <span>{{rData.titleSex}}</span> 
               </li>
              <li>{{rData.titleExt1name}}</li> 
         </ul>
-        <p class="ri-rmb">全职：{{setDy()}}</p>
+        <p class="ri-rmb">{{rData.titleClassname}}：{{setDy()}}</p>
         <div class="ri-time">
             <img src="../assets/images/timeIcon.png"/>
             <span>剩余{{rData.timeDays}}天</span>

@@ -2,7 +2,7 @@
   <div class="prompt">
       <div class="prompt-bg"></div>
       <div class="prompt-box">
-          <h3 class="prompt-title">提示</h3>
+          <h3 class="prompt-title"><img src="../assets/images/gtIcon.png"/></h3>
           <p class="prompt-content">{{content}}</p>
           <div class="prompt-btns">
                 <a  href="javascript:;" class="prompt-botton" @click="action()">确定</a>
@@ -58,7 +58,7 @@ z-index: 999;
    left:50%;
    transform:translate(-50%,-50%);
    width:75%;
-   height:rem(300px);
+     height:rem(350px);
    background:#fff;
    border-radius: 6px;
     border-width: 1px;
@@ -75,10 +75,12 @@ z-index: 999;
     border-color: #bbbbbb;
 
  .prompt-title{
-   height:rem(80px);
-   line-height:rem(80px);
+  
    font-size:20px;
    font-weight:bold;
+     img{
+      height:rem(150px);
+   }
  }
  .prompt-content{
   padding:rem(25px);

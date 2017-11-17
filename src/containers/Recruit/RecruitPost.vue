@@ -15,14 +15,16 @@
                  <span>艺术种类（您需要哪项技能的教师）</span>
               </h2>    
               <p  v-if="selectKinds.length<=0" class="input-post input-button" @click="showPanel">点击选择（该项为单选）</p>
-              <p v-else class="input-post input-button" style="color:#000" @click="showPanel">{{selectKinds[0].codeValue}}</p>
+              <p v-else class="input-post input-button" @click="showPanel">{{selectKinds[0].codeValue}}</p>
        </div> 
        <div class="section">
               <h2 class="title">
                  <img src="../../assets/images/postsectionicon3.png" />
                  <span>地址（请选择该招聘信息的工作地点）</span>
-              </h2>    
-              <input type="text"  class="input-post" @click="isShowMap" v-model="rMapAddress" placeholder="点击选择地址" />
+              </h2> 
+              <p  class="input-post input-button"@click="isShowMap">{{rMapAddress?rMapAddress:'点击选择地址'}}</p>
+     
+             <!-- <input type="text"  class="input-post" @click="isShowMap" v-model="rMapAddress" placeholder="点击选择地址" />-->
               <input type="text" class="xxdz input-post" v-model="rAddress" placeholder="详细地址：8015室" />
        </div>
         <div class="section">
@@ -31,11 +33,23 @@
                  <span>性别（您需要男老师还是女老师）</span>
               </h2>    
               <ul class="select-box">
-                 <li v-show="this.rSex=='男'" @click="selectSex('男')"><img src="../../assets/images/navIcon.png"/></li>
-                 <li v-show="this.rSex=='女'" @click="selectSex('男')"><img src="../../assets/images/navIcon2.png"/></li>
-                
-                 <li v-show="this.rSex=='女'" @click="selectSex('女')"><img src="../../assets/images/nvIcon.png"/></li>
-                 <li v-show="this.rSex=='男'" @click="selectSex('女')"><img src="../../assets/images/nvIcon2.png"/></li>
+                <!-- <li v-show="this.rSex=='男'" @click="selectSex('男')">
+                      <img src="../../assets/images/navIcon.png"/>
+                 </li>
+                 <li v-show="this.rSex=='女'" @click="selectSex('男')">
+                    <img src="../../assets/images/navIcon2.png"/>
+                 </li>
+                 <li v-show="this.rSex=='女'" @click="selectSex('女')">
+                     <img src="../../assets/images/nvIcon.png"/></li>
+                 <li v-show="this.rSex=='男'" @click="selectSex('女')">
+                    <img src="../../assets/images/nvIcon2.png"/>
+                 </li>-->
+                  <li :class="{active:rSex=='男'}"  @click="selectSex('男')">
+                     <span class="iconfont icon-nan5"></span>
+                  </li>
+                  <li :class="{active:rSex=='女'}"  @click="selectSex('女')">
+                     <span class="iconfont icon-i-nv"></span>
+                  </li>
               </ul>
        </div>
         <div class="section">
@@ -44,22 +58,27 @@
                  <span>工作性质（您需要兼职还是全职）</span>
               </h2>    
               <ul class="select-box gzxz">
-                 <li>
-                    <img src="../../assets/images/qzicon.png"/>
+                
+                  <li :class="{active:rZKind=='C'}"  @click="selectJqz('C')">
+                    <span class="iconfont   icon-quanzhirenyuan"></span>
                     <p>全职</p>
                   </li>
-                 <li>
-                  <img src="../../assets/images/jzicon.png"/>
+                  <li :class="{active:rZKind=='J'}"  @click="selectJqz('J')">
+                   <span class="iconfont   icon-jianzhi"></span>
                    <p>兼职</p>
                  </li>
               </ul>
        </div>
-      <div class="section">
+      <div class="section" >
               <h2 class="title">
                  <img src="../../assets/images/postsectionicon5.png" />
                  <span>薪资待遇（如填写虚假薪资，IPCC将不欢迎您）</span>
-              </h2>    
-              <textarea  class="input-post input-textarea" v-model="rmb" placeholder="薪资待遇（如填写虚假薪资，IPCC将不欢迎您）" />
+              </h2>   
+              <div class="xz-box" @click="showPlaceholder">
+                   <textarea  class="input-post input-textarea" v-model="rmb"  placeholder="全职：2000-3000/月  兼职：200/小时   PS：特殊情况请写详细（如发现虚假信息等，该信息将会被删除）"/>
+                 <!--<div class="text" v-show="isshowPlaceholder"><p>全职：2000-3000/月</p><p>兼职：200/小时</p><p>PS：特殊情况请写详细（如发现虚假信息等，该信息将会被删除）</p></div>-->
+              </div> 
+              
             
        </div>
          <div class="section">
@@ -88,7 +107,7 @@
        </div>
 
        </div>
-        <div class="fbutton" @click="showAlertConfirm()">
+        <div class="fbutton" @click="btnAction()">
            <p class="text">发布</p>
         </div>
          <Loading v-show="isLoading" :loaderNumber=1  bgColor="rgb(0, 0, .2)"/>
@@ -145,7 +164,8 @@ export default {
       imgUrl:api.imgUrl,
       isUpload:true,
       zfnums:0,
-      isShowKindList:false
+      isShowKindList:false,
+      isshowPlaceholder:true
     
     }
   },
@@ -161,6 +181,10 @@ export default {
      }
    },
   methods: {
+
+    showPlaceholder(){
+         this.isshowPlaceholder=false;
+    },
     showKindList(arr){
    
        this.isShowKindList=!this.isShowKindList;
@@ -197,6 +221,9 @@ export default {
     
      location.href=api.pay+"&feeClass=A&pinfoId="+GetQueryString('pinfoId')+"&msgId="+this.msgid;
 
+  },
+  toPay(){
+    location.href=api.pay+"&feeClass=A&pinfoId="+GetQueryString('pinfoId')+"&msgId="+this.msgid;
   },
   uploadResult(arr){
      console.log(arr);
@@ -242,9 +269,11 @@ export default {
               // Both requests are now complete
             this.isLoading=false;
            if((!this.$route.query.id&&this.$route.query.id<=0)||this.zfnums!=1){
-                 this.isShowAlertConfirm=true;
+                // this.isShowAlertConfirm=true;
+                  this.toPay();
            }else{
               this.promptCommon('信息修改成功');
+               
            }
            //if(!this.$route.query.id&&this.$route.query.id<=0&&this.zfnums==0)
           
@@ -398,10 +427,11 @@ export default {
                        this.isLoading=false;
                      
                       if((!this.$route.query.id&&this.$route.query.id<=0)||this.zfnums!=1){
-                          this.isShowAlertConfirm=true;
-                           
+                         // this.isShowAlertConfirm=true;
+                           this.toPay(); 
                       }else{
                           this.promptCommon('信息修改成功');
+                           // this.toPay();
                       }
                       
                      
@@ -428,21 +458,22 @@ export default {
         return;
       }
       let kindStr = '';
+      console.log(this.selectKinds);
       switch (this.selectKinds.length) {
         case 5:
-          kindStr += '&titleExt5=' + this.selectKinds[4]["data"]['codeName'];
+          kindStr += '&titleExt5=' + this.selectKinds[4]['codeName'];
 
         case 4:
-          kindStr += '&titleExt4=' + this.selectKinds[3]["data"]['codeName'];
+          kindStr += '&titleExt4=' + this.selectKinds[3]['codeName'];
 
         case 3:
-          kindStr += '&titleExt3=' + this.selectKinds[2]["data"]['codeName'];
+          kindStr += '&titleExt3=' + this.selectKinds[2]['codeName'];
 
         case 2:
-          kindStr += '&titleExt2=' + this.selectKinds[1]["data"]['codeName'];
+          kindStr += '&titleExt2=' + this.selectKinds[1]['codeName'];
 
         case 1:
-          kindStr += '&titleExt1=' + this.selectKinds[0]["data"]['codeName'];
+          kindStr += '&titleExt1=' + this.selectKinds[0]['codeName'];
           break;
         case 0:
           this.promptCommon('艺术种类不能为空');
@@ -458,10 +489,10 @@ export default {
           this.promptCommon('薪资待遇不能为空');
           return;
        }
-       if(isNaN(this.rmb)){
-          this.promptCommon('薪资待遇格式有误');
-          return;
-       }
+      //  if((this.rmb)){
+      //     this.promptCommon('薪资待遇格式有误');
+      //     return;
+      //  }
 
       if (this.workDemand == '' || !this.workDemand) {
         this.promptCommon('内容不能为空');
@@ -479,11 +510,11 @@ export default {
            xzdy=this.rmb;//+'元/小时';
         }
  
-  
+      
       this.postString = 'infoTitle=' + this.rTitle + '&titleClass=' + this.rZKind + '&salaryClass='+xzdy+'&titleDesc=' + this.workDemand + '&titleAddr=' +this.rAddress +'&mapAddr='+ this.rMapAddress+ '&mapAxis='+this.rMapX+'&mapAyis='+this.rMapY+'&titleSex=' + this.rSex + kindStr +(this.$route.query.id?('&infoIds='+this.$route.query.id):'');
       console.log(this.postString);
     //  this.isShowPlay=!this.isShowPlay;
-    this.postRecruit(this.postString);
+      this.postRecruit(this.postString);
     }
   },
   components: {
@@ -557,7 +588,10 @@ export default {
           }
           &.input-textarea{
               display:table-cell;
-              min-height:rem(300px);
+              min-height:rem(250px);
+              width:95%;
+              margin-left:auto;
+              margin-right:auto;
               resize:none;
               vertical-align: middle;
               white-space: normal;
@@ -580,6 +614,18 @@ export default {
                 justify-content:center;
                 margin:0 rem(40px);
                 border-radius:rem(30px);
+              
+                .iconfont {
+                   font-size:rem(130px);
+                }
+                 &.active{
+                   .iconfont.icon-nan5{
+                     color:#1296db;
+                   }
+                   .iconfont.icon-i-nv{
+                     color:#ff69c2;
+                   }
+                }
             }
             &.gzxz{
                 li{
@@ -589,12 +635,13 @@ export default {
                      font-size:$font-size-large;
                      color:#fff;
                      p{
-                         margin-top:rem(25px);
+                        margin-top:rem(25px);
                      }
-                     img{
-                         height:rem(140px);
-                        
-                     }
+                    &.active{
+                      .iconfont,p{
+                        color:$color-theme;
+                      }
+                    }
                 }
              }
         }
@@ -635,6 +682,7 @@ export default {
        border-radius: 100% 0 0 0;
        background-color:$color-theme;
        border-color:$color-theme;
+   
        .text{
            width:45%;
            position:absolute;
@@ -646,6 +694,39 @@ export default {
            font-weight:bold;
            white-space:nowrap;
        }
+    }
+    .xz-box{
+      position:relative;
+      width:80%;
+      margin:0 auto;
+   
+      
+       .input-textarea{
+         width:100%;
+         text-align:center;
+        padding:rem(20px);
+         vertical-align:center;
+         display:table;
+          #textArea::-webkit-input-placeholder{
+             line-height:rem(250px);
+             height:rem(250px);
+           }  
+       }
+       
+      .text{
+        text-align:center;
+        position:absolute;
+        width:95%;
+        top:50%;
+        left:50%;
+        transform:translate3d(-50%,-50%,0);
+        color:#888888;
+        font-size:16px;
+        line-height:rem(60px);
+      }
+    }
+    textarea::-webkit-input-placeholder{
+        color:#888888;
     }
 }
 </style>
