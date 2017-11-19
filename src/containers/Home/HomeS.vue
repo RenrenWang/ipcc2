@@ -44,7 +44,7 @@ export default {
    .container{
     padding-top:rem(120px);
     background-color:$color-background;
-   padding-bottom:rem(60px);
+    padding-bottom:rem(60px);
     overflow-x: hidden;
     }
     .home-header{
