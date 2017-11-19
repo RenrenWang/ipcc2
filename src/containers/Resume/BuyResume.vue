@@ -1,8 +1,8 @@
 <template>
 	<div class="resume">
-		<VHeader :isSubPage="false" title="简历大全" :isFixed="true" />
-		<SearchNavbar @searchNavLeftBtn="selectAddressCity" :sCity="user.city" @changKey="getKey"/>
-		<SearchKey :searchKeys="keyList" @resultSelect="clickSearchKey" />
+		<VHeader :isSubPage="false" title="购买的" :isFixed="true" />
+	
+		<SearchKey :searchKeys="keyList" @resultSelect="clickSearchKey" :isBuy="true"/>
 		<div class="resume-list mescroll" id="mescroll">
 			<ul id="dataList" class="data-list">
 				<ResumeItem v-for="(v,index) in pdlist" :key="index" :resume="v" />
@@ -19,7 +19,6 @@ import SearchKey from '../../components/SearchKey.vue'
 import ResumeItem from '../../components/ResumeItem.vue'
 import  SelectMapCity   from '../../components/SelectMapCity.vue'
 import  KindPanel   from '../../components/KindPanel2.vue'
-import { mapState } from 'vuex'
 export default {
 	name: 'Resume',
 	data() {
@@ -48,9 +47,10 @@ export default {
 			isShowKindList:false
 		}
 	},
-	computed: mapState({
-		user:state =>state.user
-	}),
+	// mounted() {
+
+	//  this.moreData(document.body,this.getData());
+	// },
 	mounted() {
 		this.getKindsData();
 		this.initMescroll();
@@ -145,15 +145,7 @@ export default {
                 cityPicker.hide();
                 this.city=cityInfo.name;
                 //选中的城市信息
-               	console.log(JSON.stringify(cityInfo.name));
-				this.$http.get(api.pUpdata+GetQueryString('pinfoId')+'&city='+cityInfo.name)
-				.then(response=>{
-					let data=response.data;
-					console.log(data);
-					if(data.result=='success'){
-				      this.$store.commit('changeCity',cityInfo.name);
-					}
-				})
+                console.log(JSON.stringify(cityInfo));
                });
             });
             this.isSelectAddressCity=!this.isSelectAddressCity;  
@@ -220,7 +212,7 @@ export default {
 			console.log("page.num==" + page.num + ", page.size==" + page.size);
 			//联网加载数据
 
-			this.$http.get(api.resumeList + 'isAll=Y&pinfoId='+GetQueryString('pinfoId')+'&pageno=' + page.num+this.searchStr+this.searchVal).then((response) => {
+			this.$http.get(api.gmJLList+GetQueryString('pinfoId')+'&pageno=' + page.num+this.searchStr).then((response) => {
 				//data=[]; //打开本行注释,可演示列表无任何数据empty的配置
 				let data = response.data.data;
 				// this.pdlist = data.data;
@@ -268,7 +260,7 @@ export default {
     position: fixed;
     overflow-y:auto;
   
-	top: rem(100px)  + rem(100px) + rem(110px) ;
+	top: rem(100px)  + rem(100px)  ;
 	bottom: 0;
 		ul {
 			padding: rem(60px) 15px;

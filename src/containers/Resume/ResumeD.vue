@@ -6,6 +6,7 @@
                   <span class="iconfont  icon-dizhi"></span>
                    <span class="ad-text">杭州</span>
               </div>
+              
               <div class="info-box">
                    <div class="ib-l">
                        <span class="iconfont  icon-nan3" style="color:#1296db" v-if="data.pinfoSex=='男'"></span>
@@ -19,23 +20,69 @@
                           <span>{{data.titleClassname}}</span>
                    </div>
               </div>
+              <div class="line"></div>
               <div class="x-box">
                   <ul class="info-text">
                     <li>
                        <span class="iconfont icon-geren"></span>
-                       <p>真实姓名：陈天洋</p>
+                       <p>真实姓名：{{data.pinfoPname}}</p>
                     </li>
                     <li>
                        <span class="iconfont icon-xuexiao-copy"></span>
-                       <p>毕业院校：浙江艺术职业学院</p>
+                       <p>毕业院校：{{data.collName}}</p>
                     </li>
                     <li>
                        <span class="iconfont icon-jingyan"></span>
-                       <p>教学经验：5年以上</p>
+                       <p>教学经验：{{data.teacherYear}}</p>
                     </li>
                  </ul>
               </div>
+              <div class="line"></div>
+              <div class="section">
+                   <div class="top">
+                        <span class="iconfont icon-logo"></span>
+                        <p>擅长</p>
+                   </div>
+                   <ul class="sc">
+                       
+                    
+                       <li v-if="data.titleExt1name!=''&&data.titleExt1name">{{data.titleExt1name}}</li>
+                        <li v-if="data.titleExt2name!=''&&data.titleExt2name">{{data.titleExt2name}}</li>
+                        <li v-if="data.titleExt3name!=''&&data.titleExt3name">{{data.titleExt3name}}</li>
+                       <li v-if="data.titleExt4name!=''&&data.titleExt4name">{{data.titleExt4name}}</li>
+                       <li v-if="data.titleExt5name!=''&&data.titleExt5name">{{data.titleExt5name}}</li>
+                   </ul>
+              </div>
+              <div class="line"></div>
+               <div class="section">
+                   <div class="top">
+                        <span class="iconfont icon-wenjian"></span>
+                        <p>个人简介</p>
+                   </div>
+                   <div class="grcontent">
+                       <p >{{data.pinfoNote}}</p>
+                   </div>
+              </div>
+              <div class="line"></div>
+              <div class="section">
+                   <div class="top">
+                        <span class="iconfont icon-zhaoxiang"></span>
+                        <p>艺术照</p>
+                   </div>
+                    <ul class="img-list">
+                       <li v-for="(v,index) in list">
+                         <img class="preview-img"  :src="v.src" height="100" @click="$preview.open(index, list)">
+                       </li>
+                   </ul>
+              </div>
          </div>
+        
+       <div   v-if="!applClass||applClass!='T'"  class="fbutton" @click="play()" >
+           <span class="iconfont icon-dianhua"></span>
+           <!-- <p  v-if="applClass=='T'" class="text">编辑</p> -->
+        </div>
+      
+        <BottomPlay  v-show="isShowbp"  @cancelActive="paycancelActive" :isPay="ispay" :phoneNumber="pinfoPhone" :msgId="rsmIds"/>
     </div>
 </template>
 
@@ -98,11 +145,14 @@ export default {
     },
 
     methods:{
+     paycancelActive(){
+       this.isShowbp=!this.isShowbp;
+     },
     setAge(date){
           return Math.abs(Number(new Date(date).getFullYear()) - Number(new Date().getFullYear())+1)+'岁';
       },
         play(){
-           
+               
             if(this.$route.query.isP){
           
                this.$router.push({path:'/resumePost',query:{id:this.$route.query.id,rsmIds:this.rsmIds}});
@@ -128,13 +178,21 @@ export default {
     padding-top:rem(120px);
     background:$color-background;
     min-height:100%;
+    overflow-x: hidden;
+    padding: rem(120px) 0 rem(190px) 0;
+    .line{
+      margin:rem(60px) auto 0 auto;
+      width: 50%;
+      border-bottom:1px  $color-theme    dashed;
+    }
     .address{
+        padding: 0  rem(15px);
         color:#fff;
         .icon-dizhi{
-           font-size:rem(75px);
+           font-size:rem(50px);
         }
         .ad-text{
-            font-size:18px;
+            font-size:14px;
         }
     }
     .info-box{
@@ -143,6 +201,8 @@ export default {
         justify-content:space-between;
         text:center;
         .ib-l,.ib-r{
+           position: relative;
+           top: rem(-40px);
             flex:1;
               display:flex;
         align-items:center;
@@ -151,7 +211,7 @@ export default {
         .ib-l{
             color:#fff;
           .iconfont{
-              font-size:rem(70px);
+              font-size:rem(60px);
           }
           .age{
               font-size:18px;
@@ -159,9 +219,9 @@ export default {
           }
         }
         .ib-c{
-            width:40%;
-            padding-bottom:rem(40px);
-            border-bottom:1px  $color-theme    dashed;
+          
+            width:45%;
+          
         }
         .ib-r{
            span{
@@ -172,6 +232,8 @@ export default {
     }
     .x-box{
         width:45%;
+        margin: 0 auto;
+         
         .info-text{
         color:#7ACD85;
           display:flex;
@@ -181,9 +243,14 @@ export default {
           margin:0 auto;
          width:200%;
         li{
-            
+             display:flex;
+        
+           flex-direction:row;
+          align-items: center;
+            margin-top:rem(50px);
           .iconfont{
-             font-size:rem(60px);
+             font-size: rem(55px);
+            margin-right: rem(15px);
            }
           p{
               font-size:16px;
@@ -192,6 +259,118 @@ export default {
         }
       }
     }
-   
+   .section{
+       
+       color:$color-theme;
+       font-size:16px;
+       margin: 0 auto;
+       .top{
+           margin-top:rem(40px);
+            display:flex;
+          
+           flex-direction:row;
+           justify-content:center;
+           align-items: center;
+           font-size: 16px;
+            .iconfont{
+                margin-right: 5px;
+                font-size: rem(60px);
+           }
+           .icon-logo{
+               
+               font-size: rem(90px);
+           }
+          
+       }
+       .sc{
+      
+          display:flex;
+          width: 60%;
+           flex-direction:row;
+            margin:0 auto;
+           flex-wrap: wrap;
+            justify-content:center;
+           li{
+              border:1px solid  $color-theme;
+              border-radius: rem(15px);
+               width: 33%;
+              padding: rem(14px) 0;
+              text-align: center;
+              margin: 3px;
+               overflow : hidden;
+               text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                white-space:nowrap; 
+           }
+       }
+       .grcontent{
+
+            width: 75%;
+           border:1px solid  $color-theme;
+           min-height: rem(200px);
+           border-radius: rem(20px);
+           margin: rem(40px) auto 0 auto;
+           padding: 10px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           p{
+           display: table-cell;
+           vertical-align:middle;
+           text-align: center;
+
+           }
+       }
+   }
+     .img-list{
+            width: 75%;
+            margin:rem(25px) auto 0 auto;
+            border:1px  solid $color-theme ;
+            border-radius: rem(20px);
+            min-height: rem(200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+             padding: 10px;
+            >li{
+                width:28%;
+                margin:0 1.5%;
+                img{
+                    width: 100%;
+                }
+            }
+        }
+
 }
+         .fbutton{
+       position:fixed;
+       bottom:0;
+       right:0;
+       height:rem(170px);
+       width:rem(170px);
+       border-radius: 100% 0 0 0;
+       background-color: rgb(255, 69, 69);;
+       border-color: rgb(255, 69, 69);
+       .text{
+           width:45%;
+           position:absolute;
+           left:50%;
+           top:50%;
+           transform:translate3d(-30%,-30%,0);
+           color:#fff;
+           font-size:rem(40px);
+           font-weight:bold;
+           white-space:nowrap;
+       }
+       .iconfont{
+          font-size: rem(70px);
+           position:absolute;
+           left:50%;
+           top:50%;
+           transform:translate3d(-30%,-40%,0);
+           color:#fff;
+       }
+    }
 </style>

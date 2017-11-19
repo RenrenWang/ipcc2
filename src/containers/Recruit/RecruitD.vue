@@ -12,7 +12,7 @@
              <h2>{{data.infoTitle}}</h2>
              <ul class="text-list">
                 <li v-for="v in tList">
-                    <img :src="v.icon"/>
+                    <span :class="['iconfont',v.icon]"></span>
                      <div>
                        <span class="text-name">{{v.name}}</span>
                        <span class="text-value">{{v.value}}</span>
@@ -45,13 +45,15 @@
                    </ul>
               </div>
         </div>
-         <div class="fbutton" @click="showAlertConfirm()">
-            <img src="../../assets/images/deleteIcon.png"/>
+      
+         <div v-if="applClass=='T'" class="fbutton" @click="showAlertConfirm()">
+               <span  class="iconfont icon-dianhua"></span>
+             
         </div>
+       
          <MapBig  v-if="isMapBig" :xy="mapXY" @hMap="showMapBig"/>
          <BottomPlay  v-show="isShowbp"  :isPay="true" :phoneNumber="data.pinfoPhone"/>
-         <FooterButton  v-if="($route.query.type&&applClass=='T')" btnName="与他联系" @fBtnAction="showPhone()"/>
-         <AlertConfirm  v-show="isShowAlertConfirm"  alertTitle="删除" alertContent="删除后，该信息将无法被老师所看到。" @cancelActive="AlertCancelActive" @confirmActive="AlertConfirmActive"/>
+         <AlertConfirm  v-show="isShowAlertConfirm"  :phoneNumber="data.pinfoPhone" alertTitle="删除" alertContent="删除后，该信息将无法被老师所看到。" @cancelActive="AlertCancelActive" @confirmActive="AlertConfirmActive"/>
          <Prompt v-show="isPrompt"  :content="pContent" @actionPrompt="pAction()"/>
   </div>
 </template>
@@ -91,10 +93,10 @@ export default {
            isPrompt:false,
            pContent:'',
             tList:[
-         {"icon":require('../../assets/images/tlisticon1.png'),"name":'工作性质：',"value":''},
-         {"icon":require('../../assets/images/tlisticon2.png'),"name":'性别：',"value":''},
-         {"icon":require('../../assets/images/tlisticon3.png'),"name":'技能：',"value":''},
-         {"icon":require('../../assets/images/tlisticon4.png'),"name":'薪资：',"value":''}
+         {"icon":'icon-gongzuo',"name":'工作性质：',"value":''},
+         {"icon":'icon-nannv',"name":'性别：',"value":''},
+         {"icon":'icon-logo',"name":'技能：',"value":''},
+         {"icon":'icon-qian',"name":'薪资：',"value":''}
            
      ]
         }
@@ -158,7 +160,7 @@ export default {
         location.href=api.pay+"&feeClass=A&pinfoId="+GetQueryString('pinfoId')+"&msgId="+this.data.infoIds;
       },
         setDy(){
-          return  this.data.titleClassname=='全职'?this.data.salaryClassname+"元/月":this.data.salaryClassname+"元/小时";
+          return  this.data.titleClassname=='全职'?this.data.salaryClassname:this.data.salaryClassname;
         },
        showPhone(){
             this.isShowbp=!this.isShowbp;
@@ -306,14 +308,19 @@ export default {
                   height:rem(100px);
                 
               }
+              .iconfont{
+                  color:$color-theme;
+                  font-size: rem(55px);
+                  margin-right: rem(15px);
+              }
              .text-name{
                   color:$color-theme;
-                  
+                  font-size:16px;
                  
               }
               .text-value{
                   color:$color-text;
-                  font-size:$font-size-medium;
+                  font-size:14px;
               }
           }
           
@@ -393,7 +400,7 @@ export default {
             }
         }
         .img-list{
-             margin-top:rem(25px);
+            margin-top:rem(25px);
             border:1px  solid $color-theme ;
             border-radius: rem(20px);
             min-height: rem(250px);
@@ -404,6 +411,7 @@ export default {
                 width:28%;
                 margin:0 1.5%;
                 img{
+                    height:rem(250px);
                     width: 100%;
                 }
             }
@@ -419,13 +427,25 @@ export default {
        border-radius: 100% 0 0 0;
        background-color: rgb(255, 69, 69);;
        border-color: rgb(255, 69, 69);
-       img{
+       .text{
            width:45%;
            position:absolute;
            left:50%;
            top:50%;
-           transform:translate3d(-30%,-40%,0);
+           transform:translate3d(-30%,-30%,0);
+           color:#fff;
+           font-size:rem(40px);
+           font-weight:bold;
+           white-space:nowrap;
        }
-    }
+       .iconfont{
+          font-size: rem(70px);
+           position:absolute;
+           left:50%;
+           top:50%;
+           transform:translate3d(-30%,-40%,0);
+           color:#fff;
+       }
+     }
 }
 </style>

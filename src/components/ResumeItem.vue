@@ -4,7 +4,8 @@
           <img  :src="resume.pinfoUri" class="avatar"/>
           <span class="item-name">{{resume.pinfoPname}}</span>
           <div class="age-sex">
-               <img src="../assets/images/navIcon.png"/>
+               <span class="iconfont  icon-nan3" style="color:#1296db" v-if="resume.pinfoSex=='男'"></span>
+               <span class="iconfont   icon-nv2" style="color:#ff69c2" v-if="resume.pinfoSex=='女'"></span>
                <span>{{setAge(resume.pinfoBirthday)}}</span>
           </div>
           
@@ -109,7 +110,7 @@ export default {
       font-size: $font-size-medium-x;
       font-weight: bold;
       color: #fff;
-      img {
+      span {
         margin-right: rem(15px);
         height: rem(40px);
       }

@@ -6,7 +6,7 @@ const BaseUrl='/appsrv';
 const Api={
   selectMapAddress:'https://m.amap.com/picker/?center=116.40,39.97&key=1683a75e3995650aafd98176386ccb9a',
   address:'https://m.amap.com/navi/?hideRouteIcon=1&key=1683a75e3995650aafd98176386ccb9a',
-  imgUrl:'http://120.26.85.17/imgsrv/',
+  imgUrl:'http://www.ipengcaca.com/imgsrv/',
   kindList:BaseUrl+'/ippcInfoAction.action?classInfo=',
   resumeList:BaseUrl+'/ippcInfoAction.action?newsType=RM&',
   resumeD:BaseUrl+'/ippcInfoAction.action?newsType=RMDR&rsmIds=',
@@ -20,6 +20,10 @@ const Api={
    presumeD:BaseUrl+'/ippcInfoAction.action?newsType=RMD&pinfoId=',
    person:BaseUrl+'/homeInfo.action?homeType=UR&pinfoId=',
    pUpdata:BaseUrl+'/homeInfo.action?homeType=UP&pinfoId=',
-    pay:BaseUrl+'/weixinPaycontrollerAction.action?applType=WXPAYw'
+    pay:BaseUrl+'/weixinPaycontrollerAction.action?applType=WXPAY',
+    getCode:BaseUrl+'/smsMovekControllerAction.action?mobileNumber=',
+    checkCode:BaseUrl+'/smsMovekControllerAction.action?checkMsg=&',
+    TradeList:BaseUrl+'/ippcInfoAction.action?newsType=PRORD&pinfoId=',
+    About:BaseUrl+'/homeInfo.action?homeType=EDITOR'
 };
 export{BaseUrl,Api}

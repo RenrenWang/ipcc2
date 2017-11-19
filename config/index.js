@@ -34,7 +34,7 @@ module.exports = {
     proxyTable:  {
       "/appsrv/":{
 
-      target: 'http://120.26.85.17', // target host
+      target: 'http://www.ipengcaca.com', // target host
        changeOrigin: true,               // needed for virtual hosted sites
        ws: true,                         // proxy websockets
        pathRewrite: {

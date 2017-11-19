@@ -1,14 +1,21 @@
 <template>
   <div id="app">
-      <router-view/>
+	  <keep-alive include="HomeS,HomeF">
+        <router-view/>
+     </keep-alive>
+    
   </div>
 </template>
 
 <script>
 export default {
   name: 'app',
+  mounted(){
+	 this.$store.dispatch('addUser',GetQueryString('pinfoId'));
+	
+  },
   methods:{
-	 
+	
   }
 }
 </script>

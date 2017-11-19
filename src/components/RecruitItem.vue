@@ -10,7 +10,7 @@
               </li>
              <li>{{rData.titleExt1name}}</li> 
         </ul>
-        <p class="ri-rmb">{{rData.titleClassname}}：{{setDy()}}</p>
+        <p class="ri-rmb">{{rData.titleClassname}}：{{rData.salaryClassname}}</p>
         <div class="ri-time">
             <img src="../assets/images/timeIcon.png"/>
             <span>剩余{{rData.timeDays}}天</span>

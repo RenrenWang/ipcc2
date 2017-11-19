@@ -109,10 +109,10 @@ export default {
 						warpId: "dataList",
 						icon:require('../../assets/images/mescroll-empty.png'),
 						tip: "亲,暂无相关数据哦~",
-						btntext: "去逛逛 >",
-						btnClick() {
-							// alert("点击了去逛逛按钮");
-						}
+						// btntext: "去逛逛 >",
+						// btnClick() {
+						// 	// alert("点击了去逛逛按钮");
+						// }
 					}
 				}
 			});

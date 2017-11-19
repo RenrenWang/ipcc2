@@ -223,6 +223,7 @@ export default {
 
   },
   toPay(){
+
     location.href=api.pay+"&feeClass=A&pinfoId="+GetQueryString('pinfoId')+"&msgId="+this.msgid;
   },
   uploadResult(arr){
@@ -239,33 +240,11 @@ export default {
         fData.append("prdImgtype",'A');
         fData.append("msgId",this.msgid);
         arr.push(this.$http.post(baseUrl+'/servlet/fileUploadServlet?appType=PIMGE',fData,{headers:{'Content-Type':'multipart/form-data'}}));
-   
-   
-   
-    }
+      }
 
-      
-
-
-      //  let form2 = document.getElementById("upload_1");
-      //   let fData2=new FormData(form2);
-      //   fData2.append("prdImgtype",'A');
-      //   fData2.append("msgId",this.msgid);
-
-
-      //   let form3 = document.getElementById("upload_2");
-      //    let fData3=new FormData(form3);
-      //   fData3.append("prdImgtype",'A');
-      //   fData3.append("msgId",this.msgid);
-
-        this.$http.all(
+       this.$http.all(
           arr
-        //  this.$http.post(baseUrl+'/servlet/fileUploadServlet?appType=PIMGE',fData1,{headers:{'Content-Type':'multipart/form-data'}}),
-        //  this.$http.post(baseUrl+'/servlet/fileUploadServlet?appType=PIMGE',fData2,{headers:{'Content-Type':'multipart/form-data'}}),
-        //   this.$http.post(baseUrl+'/servlet/fileUploadServlet?appType=PIMGE',fData3,{headers:{'Content-Type':'multipart/form-data'}}),
-       
-        )
-       .then(this.$http.spread( (acct, perms)=> {
+       ).then(this.$http.spread((acct,perms)=> {
               // Both requests are now complete
             this.isLoading=false;
            if((!this.$route.query.id&&this.$route.query.id<=0)||this.zfnums!=1){
@@ -275,13 +254,7 @@ export default {
               this.promptCommon('信息修改成功');
                
            }
-           //if(!this.$route.query.id&&this.$route.query.id<=0&&this.zfnums==0)
-          
-           
-            
-           
-            
-             console.log(acct);
+            console.log(acct);
              console.log(perms);
         }));
     // alert(JSON.stringify(response.data));
@@ -417,11 +390,12 @@ export default {
               //response.data.infoIds
               //this.postImg();
               this.msgid=response.data.infoIds;
+         
                  if(this.msgid>0&&this.refNameArr.length>0){
                  
                   //  document.getElementById("submit").click();
                
-                               this.postImg();
+                      this.postImg();
                               
                     }else{
                        this.isLoading=false;

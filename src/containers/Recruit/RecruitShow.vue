@@ -1,11 +1,11 @@
 <template>
 	<div class="resume">
-		<VHeader :isSubPage="false" title="简历大全" :isFixed="true" />
+		<VHeader :isSubPage="false" title="招聘信息" :isFixed="true" />
 		<SearchNavbar @searchNavLeftBtn="selectAddressCity" :sCity="user.city" @changKey="getKey"/>
 		<SearchKey :searchKeys="keyList" @resultSelect="clickSearchKey" />
 		<div class="resume-list mescroll" id="mescroll">
 			<ul id="dataList" class="data-list">
-				<ResumeItem v-for="(v,index) in pdlist" :key="index" :resume="v" />
+			  <RecruitItem v-for="(v,index) in pdlist"  :key="index" :rData="v" :selectIndex='index' />
 			</ul>
 		</div>
         <KindPanel   v-show="isShowKindList" @showHid="showKindList" :kindList="kinds"/>
@@ -16,7 +16,7 @@
 import VHeader from '../../components/Header.vue'
 import SearchNavbar from '../../components/SearchNavbar.vue'
 import SearchKey from '../../components/SearchKey.vue'
-import ResumeItem from '../../components/ResumeItem.vue'
+import  RecruitItem   from '../../components/RecruitItem.vue'
 import  SelectMapCity   from '../../components/SelectMapCity.vue'
 import  KindPanel   from '../../components/KindPanel2.vue'
 import { mapState } from 'vuex'
@@ -48,13 +48,17 @@ export default {
 			isShowKindList:false
 		}
 	},
-	computed: mapState({
-		user:state =>state.user
-	}),
+	// mounted() {
+
+	//  this.moreData(document.body,this.getData());
+	// },
 	mounted() {
 		this.getKindsData();
 		this.initMescroll();
 	},
+	  computed: mapState({
+      user:state =>state.user
+  }),
 	methods: {
 		showKindList(arr){
 
@@ -63,8 +67,7 @@ export default {
 				  
 			 }else{
 				this.keyList[1]['name']="艺术种类";
-			
-			 }
+			}
 		     this.getkinds(arr,1);
              this.isShowKindList=!this.isShowKindList;
 		},
@@ -121,7 +124,7 @@ export default {
 					break;
 			  }
 		  }
-		 this.searchStr=this.resStr("pinfoSex",this.pinfoSex)+this.resStr("titleExt",this.titleExt)+this.resStr("titleClass",this.titleClass);
+		 this.searchStr=this.resStr("titleSex",this.pinfoSex)+this.resStr("titleExt",this.titleExt)+this.resStr("titleClass",this.titleClass);
 			
 		 this.mescroll.resetUpScroll( false );
 		},
@@ -143,9 +146,8 @@ export default {
             cityPicker.on('citySelected', (cityInfo)=> {
                 //隐藏城市列表
                 cityPicker.hide();
-                this.city=cityInfo.name;
-                //选中的城市信息
-               	console.log(JSON.stringify(cityInfo.name));
+				this.city=cityInfo.name;
+				console.log(JSON.stringify(cityInfo.name));
 				this.$http.get(api.pUpdata+GetQueryString('pinfoId')+'&city='+cityInfo.name)
 				.then(response=>{
 					let data=response.data;
@@ -154,6 +156,9 @@ export default {
 				      this.$store.commit('changeCity',cityInfo.name);
 					}
 				})
+			
+                //选中的城市信息
+               
                });
             });
             this.isSelectAddressCity=!this.isSelectAddressCity;  
@@ -220,7 +225,7 @@ export default {
 			console.log("page.num==" + page.num + ", page.size==" + page.size);
 			//联网加载数据
 
-			this.$http.get(api.resumeList + 'isAll=Y&pinfoId='+GetQueryString('pinfoId')+'&pageno=' + page.num+this.searchStr+this.searchVal).then((response) => {
+			this.$http.get(api.recruitList + 'isAll=Y&pinfoId='+GetQueryString('pinfoId')+'&pageno=' + page.num+this.searchStr+this.searchVal).then((response) => {
 				//data=[]; //打开本行注释,可演示列表无任何数据empty的配置
 				let data = response.data.data;
 				// this.pdlist = data.data;
@@ -250,7 +255,7 @@ export default {
 		VHeader,
 		SearchNavbar,
 		SearchKey,
-		ResumeItem,
+		RecruitItem,
 		KindPanel
 	
 	}

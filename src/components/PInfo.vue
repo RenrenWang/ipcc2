@@ -1,5 +1,5 @@
 <template>
-    <div class="pInfo">
+    <div class="pInfo" @click="toUrl()">
             <div class="hp-avatar" :style="avaterStyle">
                 <img :src="imgUrl" :style="avaterStyle"/>
                  <a  href="javascript:;" class="btn-edit" v-if="isHome">
@@ -31,12 +31,22 @@ export default {
     },
     name:{
         type:String 
+    },
+    url:{
+        type:String,
+        default:''
     }
   },
   data () {
     return {
        
     }
+  },
+  methods:{
+      toUrl(){
+         if(this.url&&this.url!='')
+         this.$router.push({ path:'/MyInfo'})
+      }
   }
 }
 </script>

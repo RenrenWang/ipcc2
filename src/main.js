@@ -6,6 +6,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VuePreview from 'vue-preview'
+import store from './store'
 Vue.use(VuePreview)
 import {BaseUrl,Api} from './api.js'
 global.baseUrl=BaseUrl;
@@ -27,5 +28,6 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  store
 })

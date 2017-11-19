@@ -1,16 +1,16 @@
 <template>
-  <div class="search-key">
+  <div :class="['search-key',{mt:isBuy}]">
        <div class="search-key-item">
-          <div :class="['search-key-item-s']" @click="resultKindPanel(0)">
+          <div :class="['search-key-item-s']" @click.stop="resultKindPanel(0)">
             <span>{{searchKeys[0].name}}</span>
                   <!--<select v-model="selectedQj">
                   <option v-for="option in optionsQj"  :value="option.value">
                          {{option.codeName}}
                   </option>
-                </select>
-                <ul class="key-list">
-                     <li  v-for="option in optionsQj"  :value="option.value">{{option.codeName}}</li>
-                </ul>-->
+                </select>-->
+                <ul class="key-list" v-show="isSelectQj">
+                     <li  @click.stop="selectItem(0,index)" v-for="(option,index) in optionsQj"  :value="option.value">{{option.codeValue}}</li>
+                </ul>
           </div>
        </div>
        <div class="search-key-item">
@@ -21,11 +21,9 @@
         <div class="search-key-item">
           <div :class="['search-key-item-s']" @click="resultKindPanel(2)">
                 <span>{{searchKeys[2].name}}</span>
-                  <!-- <select v-model="selectedSex">
-                  <option v-for="option in optionsSex"  :value="option.value">
-                         {{option.codeName}}
-                  </option>
-                </select>-->
+                  <ul class="key-list"  v-show="isSelectSex">
+                     <li  @click.stop="selectItem(2,index)" v-for="(option,index) in optionsSex"  :value="option.value">{{option.codeValue}}</li>
+                </ul>
           </div>
        </div>
   </div>
@@ -41,6 +39,10 @@ export default {
      required: true,
     
      
+   },
+   isBuy:{
+     type:Boolean,
+     default:false
    }
   
   },
@@ -52,22 +54,54 @@ export default {
       selectedSex: 'Q',
       selectedQj:'Q',
       optionsSex: [
-       { codeName: '性别', codeValue: 'Q' },
-        { codeName: '男', codeValue: '男' },
-       { codeName: '女', codeValue: '女' }
+       { codeValue: '全部', codeName: 'Q' },
+        { codeValue: '男', codeName: '男' },
+       { codeValue: '女', codeName: '女' }
       ],
       optionsQj: [
-         { codeName: '兼全职', codeValue: 'Q' },
-       { codeName: '全职', codeValue: 'T' },
-       { codeName: '兼职', codeValue: 'J' }
-      ]
+       { codeValue: '全部', codeName: 'Q' },
+       { codeValue: '全职', codeName: 'C' },
+       { codeValue: '兼职', codeName: 'J' }
+      ],
+      isSelectQj:false,
+      isSelectSex:false
     }
   },
   methods:{
     resultKindPanel(index){
       if(index==1)
         this.$emit("resultSelect",index);
-
+      if(index==0){
+          this.isSelectQj=true;
+      }
+      
+        if(index==2){
+ this.isSelectSex=true;
+        }
+      
+    },
+    selectItem(sindex,index){
+     
+     if(sindex==0){
+       this.isSelectQj=false;
+      
+       if(index==0){
+         this.$emit("resultSelect",{index:0,data:[]});
+       }else{
+          this.$emit("resultSelect",{index:0,data:[this.optionsQj[index]]});
+       }
+       
+     }
+      
+     if(sindex==2){
+       this.isSelectSex=false;
+        if(index==0){
+          this.$emit("resultSelect",{index:2,data:[]});
+       }else{
+        this.$emit("resultSelect",{index:2,data:[this.optionsSex[index]]});
+       }
+     }
+   
     }
    
   },
@@ -91,7 +125,9 @@ export default {
  align-items:center;
  justify-content: center;
  z-index: 999;
-
+&.mt{
+  top:rem(100px);
+ }
  .search-key-item{
    font-size:$font-size-medium-x;
     width: 28%;
@@ -113,9 +149,10 @@ export default {
         border-right:1px solid #fff;
         border-left:1px solid #fff;
         border-top:1px solid #fff;
-        background:rgb(122, 205, 133);
+        background:#fff;
         border-radius:0 0 rem(20px) rem(20px);
         text-align:center;
+        color:#222;
         li{
           padding:rem(25px) 0;
           border-bottom:1px solid #fff;

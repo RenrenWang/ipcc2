@@ -9,7 +9,7 @@
            <input  type="text" v-model="searchKey"  @change="changeInputKey()"  placeholder="搜索"/>
        </div>
        <p class="link">
-          <router-link :to="{ name: 'Purchased',query:{type:isAll}}"  v-if="!isAll">购买的</router-link>
+          <router-link :to="{ name: 'BuyResume',query:{type:isAll}}"  v-if="!isAll">购买的</router-link>
           <!-- <router-link :to="{ name: 'Purchased',query:{type:isAll}}"  v-else>已联系</router-link> -->
        </p>
   </div>

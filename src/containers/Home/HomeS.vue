@@ -1,27 +1,34 @@
 <template>
   <div class="home">
-      <vHeader title="IPCC机构端"  :isSubPage="false"/> 
-        <div class="home-header">
+      <vHeader title="IPCC教师端" :isFixed="true" :isSubPage="false"/> 
+        <div class="container">
+           <div class="home-header">
             <a href="javascript:;" class="hhbtn-left"></a>
             <a href="javascript:;" class="hhbtn-right"></a>
+            </div>
+           <PInfo  url='/MyInfo' :imgUrl="user.pinfoUri" :name="user.pinfoSname"/>
+          <Tab :rsmStatus="user.rsmStatus" />
         </div>
-        <PInfo/>
-       <Tab/>
   </div>
 </template>
 
 <script>
 
 import  vHeader from '../../components/Header.vue'
-import  Tab from './Tab.vue'
+import  Tab from './Tab2.vue'
 import  PInfo from '../../components/PInfo.vue'
+import { mapState } from 'vuex'
+
 export default {
-  name: 'Home',
+  name: 'HomeS',
   data () {
     return {
-      
+     
     }
   },
+  computed: mapState({
+      user:state =>state.user
+  }),
   components:{
       Tab,vHeader,PInfo
   }
@@ -32,8 +39,14 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/style/base.scss"; 
 .home{
-    height:100%;
+    min-height:100%;
     background-color:$color-background;
+   .container{
+    padding-top:rem(120px);
+    background-color:$color-background;
+   padding-bottom:rem(60px);
+    overflow-x: hidden;
+    }
     .home-header{
         padding:0 rem(30px);
         height:rem(120px);
